@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from bson.json_util import dumps
 from bson import ObjectId
 import json
-import uuid
 
 # Initializing the flask app
 app = Flask(__name__)
@@ -34,7 +33,7 @@ def create_cart():
 
 # view an existing cart
 @app.route("/cart/<cartId>", methods=["GET"])
-def view_cart(id):
+def view_cart(cartId):
     cart = collection.find_one({"_id": ObjectId(cartId)})    
     
     if cart and request.method == "GET":
@@ -45,8 +44,8 @@ def view_cart(id):
 
 # get items from cart
 @app.route("/cart/<cartId>/items", methods=["GET"])
-def get_items(cartId, itemId):
-    cart = collection.find_one({"_id": ObjectId(id)})
+def get_items(cartId):
+    cart = collection.find_one({"_id": ObjectId(cartId)})
     
     if cart and request.method == "GET":
         data = json.loads(dumps(cart))
